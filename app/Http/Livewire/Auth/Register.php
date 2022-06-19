@@ -40,8 +40,8 @@ class Register extends Component
         $user = $this->user->create($this->user->toArray());
 
         if ($user) {
-            $this->emit('toast', 'success', 'Success Notfication', 'User created successfully.');
             Auth::loginUsingId($user->id);
+            $this->emit('toast', 'success', 'Success Notfication', 'User created successfully.');
             $this->reset();
             return redirect()->route('dashboard');
         }
