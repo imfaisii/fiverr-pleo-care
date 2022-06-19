@@ -54,9 +54,13 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://fiverr-pleocare.test'),
 
     'asset_url' => env('ASSET_URL'),
+
+    'support' => [
+        'email' => 'contact@pleocare.com'
+    ],
 
     /*
     |--------------------------------------------------------------------------
