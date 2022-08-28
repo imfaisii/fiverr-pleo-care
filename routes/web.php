@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\Dashboard\Home;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,8 +20,14 @@ Route::get('/', function () {
 
 Route::view('mail/reset', 'test.reset');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('dashboard', Home::class)->middleware(['auth'])->name('dashboard');
+
+// roles and permissions
+
+Route::group(['middleware' => ['auth']], function () {
+    // Route::resource('roles', RoleController::class);
+    // Route::resource('users', UserController::class);
+    // Route::resource('products', ProductController::class);
+});
 
 require __DIR__ . '/auth.php';
