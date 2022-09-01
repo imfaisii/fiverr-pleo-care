@@ -20,7 +20,16 @@
         <x-partials.dashboard.side-bar />
 
         <!-- Content Wrapper. Contains page content -->
-        @yield('content')
+        <div class="content-wrapper">
+            <div class="container-full">
+                <!-- breadcrumb -->
+                <x-partials.dashboard.bread-crumb />
+                <!-- Main content -->
+                <section class="content">
+                    @yield('content')
+                </section>
+            </div>
+        </div>
         <!-- /.content-wrapper -->
 
         <!-- Side panel -->

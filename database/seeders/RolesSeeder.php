@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Constants\Constant;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -16,10 +16,10 @@ class RolesSeeder extends Seeder
     public function run()
     {
         $roles = [
-            ['name' => 'super-admin', 'guard_name' => 'web'],
-            ['name' => 'company', 'guard_name' => 'web'],
-            ['name' => 'manager', 'guard_name' => 'web'],
-            ['name' => 'employee', 'guard_name' => 'web'],
+            ['name' => Constant::SUPER_ADMIN, 'guard_name' => 'web'],
+            ['name' => Constant::COMPANY, 'guard_name' => 'web'],
+            ['name' => Constant::MANAGER, 'guard_name' => 'web'],
+            ['name' => Constant::EMPLOYEE, 'guard_name' => 'web'],
         ];
 
         foreach ($roles as $key => $role) Role::firstOrCreate($role);

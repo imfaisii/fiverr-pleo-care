@@ -7,7 +7,7 @@
     <script src="{{ asset('assets/vendor_plugins/toastr/js/toastr.min.js') }}"></script>
     <script>
         function makeToastr(type, heading = "Notification", message) {
-            toastr['success'](
+            toastr[type](
                 message,
                 heading, {
                     closeButton: true,

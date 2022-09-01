@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Constants\Constant;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,7 +25,10 @@ class SuperAdminSeeder extends Seeder
             'password' => Hash::make('pleotek@321')
         ]);
 
-        $role = Role::whereName('super-admin')->first();
+        // adding avatar
+        $superAdmin->addMedia(public_path('/images/avatar.jpg'))->preservingOriginal()->toMediaCollection('avatars');
+
+        $role = Role::whereName(Constant::SUPER_ADMIN)->first();
         $permissions = Permission::pluck('id', 'id')->all();
         $role->syncPermissions($permissions);
 
