@@ -14,4 +14,9 @@ class Constant
     const COMPANY = 'company';
     const MANAGER = 'manager';
     const EMPLOYEE = 'employee';
+
+    // shifts constants
+    const CREATED = 'created';
+    const COMPLETED = 'completed';
+    const IN_PROGRESS = 'in-progress';
 }

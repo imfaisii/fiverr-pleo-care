@@ -64,10 +64,10 @@
                                     <!-- /.col -->
                                 </div>
                             </form>
-                            <div class="text-center">
+                            {{-- <div class="text-center">
                                 <p class="mt-15 mb-0 text-fade">Don't have an account? <a
                                         href="{{ route('register') }}" class="text-primary ms-5">Sign Up</a></p>
-                            </div>
+                            </div> --}}
 
                             {{-- <div class="text-center">
                                 <p class="mt-20 text-fade">- Sign With -</p>

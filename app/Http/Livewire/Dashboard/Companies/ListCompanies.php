@@ -8,6 +8,6 @@ class ListCompanies extends Component
 {
     public function render()
     {
-        return view('livewire.dashboard.companies.list-companies')->extends('layouts.dashboard.app')->section('content');;
+        return view('livewire.dashboard.companies.list-companies')->extends('layouts.dashboard.app')->section('content');
     }
 }

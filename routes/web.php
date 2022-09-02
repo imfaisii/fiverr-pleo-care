@@ -1,13 +1,19 @@
 <?php
 
+use App\Http\Livewire\Dashboard\Clients\CreateClient;
+use App\Http\Livewire\Dashboard\Clients\ListClients;
 use App\Http\Livewire\Dashboard\Companies\CreateCompany;
 use App\Http\Livewire\Dashboard\Companies\ListCompanies;
+use App\Http\Livewire\Dashboard\Employees\CreateEmployee;
 use App\Http\Livewire\Dashboard\Employees\ListEmployees;
 use App\Http\Livewire\Dashboard\Home;
 use App\Http\Livewire\Dashboard\Managers\CreateManager;
 use App\Http\Livewire\Dashboard\Managers\ListManagers;
 use App\Http\Livewire\Dashboard\RolesAndPermissions\Permissions;
 use App\Http\Livewire\Dashboard\RolesAndPermissions\Roles;
+use App\Http\Livewire\Dashboard\Shifts\CreateShift;
+use App\Http\Livewire\Dashboard\Shifts\Employees\ViewShifts;
+use App\Http\Livewire\Dashboard\Shifts\ListShifts;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,7 +28,7 @@ Route::get('dashboard', Home::class)->middleware(['auth'])->name('dashboard');
 Route::group(['middleware' => ['auth', 'role:super-admin']], function () {
     Route::get('roles', Roles::class)->name('roles');
     Route::get('permissions', Permissions::class)->name('permissions');
-    Route::get('company-create', CreateCompany::class)->name('companies.create');
+    Route::get('company/create', CreateCompany::class)->name('companies.create');
     Route::get('companies', ListCompanies::class)->name('companies.list');
 });
 
@@ -33,7 +39,17 @@ Route::group(['middleware' => ['auth', 'role:company']], function () {
 
 // company
 Route::group(['middleware' => ['auth', 'role:manager']], function () {
+    Route::get('employee/create', CreateEmployee::class)->name('employees.create');
     Route::get('employees', ListEmployees::class)->name('employees.list');
+    Route::get('client/create', CreateClient::class)->name('clients.create');
+    Route::get('clients', ListClients::class)->name('clients.list');
+    Route::get('shift/create', CreateShift::class)->name('shifts.create');
+    Route::get('shifts', ListShifts::class)->name('shifts.list');
+});
+
+// company
+Route::group(['middleware' => ['auth', 'role:employee']], function () {
+    Route::get('view/shifts', ViewShifts::class)->name('employees.shifts.view');
 });
 
 require __DIR__ . '/auth.php';

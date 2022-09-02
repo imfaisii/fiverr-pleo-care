@@ -16,13 +16,14 @@
                                 class="rounded bg-danger-light w-150" width="100">
                         </div>
                         <div class="ps-20">
-                            <h5 class="mb-0">Nil Yeager</h5>
-                            <p class="my-5 text-fade">Manager</p>
-                            <a href="mailto:dummy@gmail.com">
-                                <span class="icon-Mail-notification me-5 text-success"><span class="path1"></span>
+                            <h5 class="mb-0">{{ auth()->user()->name }}</h5>
+                            <p class="my-5 text-fade">{{ ucwords(auth()->user()->roles->first()->name) }}</p>
+                            <a href="mailto:{{ auth()->user()->email }}">
+                                <span class="icon-Mail-notification me-5 text-success">
+                                    <span class="path1"></span>
                                     <span class="path2"></span>
                                 </span>
-                                dummy@gmail.com
+                                {{ auth()->user()->email }}
                             </a>
                         </div>
                     </div>

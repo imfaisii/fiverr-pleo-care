@@ -23,4 +23,14 @@ class Manager extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
+
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class);
+    }
 }

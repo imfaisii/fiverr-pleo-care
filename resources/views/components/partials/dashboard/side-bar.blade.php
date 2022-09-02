@@ -100,12 +100,98 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
+                                <li @if (checkStatus('employees.create')) class='active' @endif>
+                                    <a href="{{ route('employees.create') }}">
+                                        <i class="icon-Commit">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Create New
+                                    </a>
+                                </li>
                                 <li @if (checkStatus('employees.list')) class='active' @endif><a
                                         href="{{ route('employees.list') }}">
                                         <i class="icon-Commit">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
-                                        </i>Create & Listings
+                                        </i>Listings
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="#">
+                                <i data-feather="user-plus"></i>
+                                <span>Clients</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-right pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li @if (checkStatus('clients.create')) class='active' @endif>
+                                    <a href="{{ route('clients.create') }}">
+                                        <i class="icon-Commit">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Create New
+                                    </a>
+                                </li>
+                                <li @if (checkStatus('clients.list')) class='active' @endif><a
+                                        href="{{ route('clients.list') }}">
+                                        <i class="icon-Commit">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Listings
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="#">
+                                <i data-feather="calendar"></i>
+                                <span>Shifts Management</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-right pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li @if (checkStatus('shifts.create')) class='active' @endif>
+                                    <a href="{{ route('shifts.create') }}">
+                                        <i class="icon-Commit">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Create New
+                                    </a>
+                                </li>
+                                <li @if (checkStatus('shifts.list')) class='active' @endif><a
+                                        href="{{ route('shifts.list') }}">
+                                        <i class="icon-Commit">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Listings
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endrole
+
+                    @role(\App\Constants\Constant::EMPLOYEE)
+                        <li class="treeview">
+                            <a href="#">
+                                <i data-feather="calendar"></i>
+                                <span>Shifts</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-right pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li @if (checkStatus('employees.shifts.view')) class='active' @endif>
+                                    <a href="{{ route('employees.shifts.view') }}">
+                                        <i class="icon-Commit">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Listings
                                     </a>
                                 </li>
                             </ul>

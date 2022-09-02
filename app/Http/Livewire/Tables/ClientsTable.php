@@ -2,36 +2,22 @@
 
 namespace App\Http\Livewire\Tables;
 
-use App\Constants\Constant;
-use App\Models\Employee;
-use App\Models\User;
+use App\Models\Client;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class EmployeesTable extends PowerGridComponent
+final class ClientsTable extends PowerGridComponent
 {
     use ActionButton;
 
-    protected function getListeners(): array
+    public function delete(Client $client)
     {
-        return array_merge(
-            parent::getListeners(),
-            [
-                'dt'   => '$refresh',
-            ]
-        );
+        $client->delete();
+        $this->emit('toast', 'success', 'Success Notfication', 'Client was deleted successfully.');
     }
-
-    public function delete(Employee $employee)
-    {
-        $employee->user->delete();
-        $employee->delete();
-        $this->emit('toast', 'success', 'Success Notfication', 'Employee was deleted successfully.');
-    }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -61,9 +47,14 @@ final class EmployeesTable extends PowerGridComponent
     |
     */
 
+    /**
+     * PowerGrid datasource.
+     *
+     * @return Builder<\App\Models\Client>
+     */
     public function datasource(): Builder
     {
-        return Employee::whereBelongsTo(auth()->user()->manager)->with('user');
+        return Client::query()->whereBelongsTo(auth()->user()->manager)->with('manager.user');
     }
 
     /*
@@ -95,21 +86,15 @@ final class EmployeesTable extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
+            ->addColumn('name')
             ->addColumn('address')
+            ->addColumn('phone_number')
+            ->addColumn('email')
+            ->addColumn('city')
             ->addColumn('gender')
-            ->addColumn('user.name')
-            ->addColumn('user.email')
-            ->addColumn('status', function (Employee $model) {
-                if ($model->user->status == Constant::STATUS_ACTIVE)
-                    $class = "badge badge-success";
-                else if ($model->user->status == Constant::STATUS_PENDING)
-                    $class = "badge badge-warning";
-                else
-                    $class = "badge badge-danger";
-
-                return '<span class="' . $class . '">' . $model->user->status . '</span>';
-            })
-            ->addColumn('created_at_formatted', fn (Employee $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('age')
+            ->addColumn('manager.user.name')
+            ->addColumn('created_at_formatted', fn (Client $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -129,7 +114,7 @@ final class EmployeesTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('NAME', 'user.name')
+            Column::make('NAME', 'name')
                 ->sortable()
                 ->searchable(),
 
@@ -137,17 +122,25 @@ final class EmployeesTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
+            Column::make('PHONE NUMBER', 'phone_number')
+                ->searchable(),
+
+            Column::make('EMAIL', 'email')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('CITY', 'city')
+                ->sortable()
+                ->searchable(),
+
             Column::make('GENDER', 'gender')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('EMAIL', 'user.email')
-                ->sortable()
+            Column::make('AGE', 'age')
                 ->searchable(),
 
-            Column::make('STATUS', 'status')
-                ->sortable()
-                ->searchable(),
+            Column::make('MANAGER NAME', 'manager.user.name'),
 
             Column::make('CREATED AT', 'created_at_formatted', 'created_at')
                 ->searchable()
@@ -165,7 +158,7 @@ final class EmployeesTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid User Action Buttons.
+     * PowerGrid Client Action Buttons.
      *
      * @return array<int, Button>
      */
@@ -179,7 +172,6 @@ final class EmployeesTable extends PowerGridComponent
         ];
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Actions Rules
@@ -189,7 +181,7 @@ final class EmployeesTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid User Action Rules.
+     * PowerGrid Client Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -201,7 +193,7 @@ final class EmployeesTable extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($user) => $user->id === 1)
+                ->when(fn($client) => $client->id === 1)
                 ->hide(),
         ];
     }

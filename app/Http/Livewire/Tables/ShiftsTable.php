@@ -3,35 +3,27 @@
 namespace App\Http\Livewire\Tables;
 
 use App\Constants\Constant;
-use App\Models\Employee;
-use App\Models\User;
+use App\Models\Shift;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class EmployeesTable extends PowerGridComponent
+final class ShiftsTable extends PowerGridComponent
 {
     use ActionButton;
 
-    protected function getListeners(): array
+    public function delete(Shift $shift)
     {
-        return array_merge(
-            parent::getListeners(),
-            [
-                'dt'   => '$refresh',
-            ]
-        );
-    }
+        if (in_array($shift->status, [Constant::IN_PROGRESS, Constant::COMPLETED])) {
+            $this->emit('toast', 'error', 'Error Notfication', 'Cannot delete completed or assigned shift.');
+            return;
+        }
 
-    public function delete(Employee $employee)
-    {
-        $employee->user->delete();
-        $employee->delete();
-        $this->emit('toast', 'success', 'Success Notfication', 'Employee was deleted successfully.');
+        $shift->delete();
+        $this->emit('toast', 'success', 'Success Notfication', 'Shift was deleted successfully.');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -61,9 +53,14 @@ final class EmployeesTable extends PowerGridComponent
     |
     */
 
+    /**
+     * PowerGrid datasource.
+     *
+     * @return Builder<\App\Models\Shift>
+     */
     public function datasource(): Builder
     {
-        return Employee::whereBelongsTo(auth()->user()->manager)->with('user');
+        return Shift::query()->whereBelongsTo(auth()->user()->manager)->with(['client', 'employee.user']);
     }
 
     /*
@@ -95,21 +92,26 @@ final class EmployeesTable extends PowerGridComponent
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('address')
-            ->addColumn('gender')
-            ->addColumn('user.name')
-            ->addColumn('user.email')
-            ->addColumn('status', function (Employee $model) {
-                if ($model->user->status == Constant::STATUS_ACTIVE)
+            ->addColumn('name')
+            ->addColumn('description')
+            ->addColumn('hourly_rate')
+            ->addColumn('start_time_formatted', fn (Shift $model) => Carbon::parse($model->start_time)->format('d/m/Y H:i:s'))
+            ->addColumn('end_time_formatted', fn (Shift $model) => Carbon::parse($model->end_time)->format('d/m/Y H:i:s'))
+            ->addColumn('status', function (Shift $model) {
+                if ($model->status == Constant::COMPLETED)
                     $class = "badge badge-success";
-                else if ($model->user->status == Constant::STATUS_PENDING)
+                else if ($model->status == Constant::IN_PROGRESS)
                     $class = "badge badge-warning";
                 else
-                    $class = "badge badge-danger";
+                    $class = "badge badge-info";
 
-                return '<span class="' . $class . '">' . $model->user->status . '</span>';
+                return '<span class="' . $class . '">' . $model->status . '</span>';
             })
-            ->addColumn('created_at_formatted', fn (Employee $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('client.name')
+            ->addColumn('employee.name', function (Shift $model) {
+                return $model->employee ? $model->employee->user->name : 'Not Assigned';
+            })
+            ->addColumn('created_at_formatted', fn (Shift $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -129,25 +131,32 @@ final class EmployeesTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('NAME', 'user.name')
+
+            Column::make('NAME', 'name')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('ADDRESS', 'address')
+            Column::make('DESCRIPTION', 'description')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('GENDER', 'gender')
-                ->sortable()
-                ->searchable(),
+            Column::make('HOURLY RATE', 'hourly_rate'),
 
-            Column::make('EMAIL', 'user.email')
-                ->sortable()
-                ->searchable(),
+            Column::make('START TIME', 'start_time_formatted', 'start_time')
+                ->searchable()
+                ->sortable(),
+
+            Column::make('END TIME', 'end_time_formatted', 'end_time')
+                ->searchable()
+                ->sortable(),
 
             Column::make('STATUS', 'status')
-                ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->sortable(),
+
+            Column::make('CLIENT NAME', 'client.name'),
+
+            Column::make('EMPLOYEE ID', 'employee.name'),
 
             Column::make('CREATED AT', 'created_at_formatted', 'created_at')
                 ->searchable()
@@ -165,7 +174,7 @@ final class EmployeesTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid User Action Buttons.
+     * PowerGrid Shift Action Buttons.
      *
      * @return array<int, Button>
      */
@@ -179,7 +188,6 @@ final class EmployeesTable extends PowerGridComponent
         ];
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Actions Rules
@@ -189,7 +197,7 @@ final class EmployeesTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid User Action Rules.
+     * PowerGrid Shift Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -201,7 +209,7 @@ final class EmployeesTable extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($user) => $user->id === 1)
+                ->when(fn($shift) => $shift->id === 1)
                 ->hide(),
         ];
     }
