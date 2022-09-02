@@ -96,7 +96,7 @@
                     <tr>
                         <td align="center" valign="top" style="padding: 40px 10px 10px 10px;">
                             <a href="#" target="_blank" style="text-decoration: none;">
-                                <img src="{{ asset('images/logo-dark-text.png') }}" alt="{{ config('app.name') }}" />
+                                <img style="width:200px;" src="{{ asset('images/logo-dark-text.png') }}" alt="{{ config('app.name') }}" />
                             </a>
                         </td>
                     </tr>
