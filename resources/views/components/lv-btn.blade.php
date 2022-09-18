@@ -1,6 +1,6 @@
 @props(['functionName', 'btnText'])
 
-<button wire:click="{{ $functionName }}" wire:loading.attr='disabled' class="btn btn-primary" type="button">
+<button {{ $attributes }} wire:click="{{ $functionName }}" wire:loading.attr='disabled' class="btn btn-primary" type="button">
     <span>
         <div wire:loading wire:target="{{ $functionName }}">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;

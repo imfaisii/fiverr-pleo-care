@@ -21,8 +21,7 @@
             this.$modalTitle.text("Edit Event"),
             this.$modal.show(),
             (this.$selectedEvent = e.event),
-            l("#event-title").val(this.$selectedEvent.title),
-            l("#event-category").val(this.$selectedEvent.classNames[0]);
+            l("#event-title").val(this.$selectedEvent.title);
     }),
         (e.prototype.onSelect = function (e) {
             this.$formEvent[0].reset(),
@@ -36,34 +35,30 @@
         }),
         (e.prototype.init = function () {
             var e = new Date(l.now());
-            new FullCalendar.Draggable(document.getElementById("external-events"), {
-                itemSelector: ".external-event",
-                eventData: function (e) {
-                    return { title: e.innerText, className: l(e).data("class") };
-                },
-            });
-            var t = [
-                    { title: "Lunch", start: new Date(l.now() + 178e6), end: new Date(l.now() + 138e6), className: "bg-warning" },
-                    { title: "Your Birthday", start: e, end: e, className: "bg-success" },
-                    { title: "Do Homework", start: new Date(l.now() + 168e6), className: "bg-primary" },
-                    { title: "SLEEP TIGHT", start: new Date(l.now() + 338e6), end: new Date(l.now() + 338e6), className: "bg-danger" },
-                ],
+            var t = typeof calendarEvents !== 'undefined' ? calendarEvents : [],
                 a = this;
-            (a.$calendarObj = new FullCalendar.Calendar(a.$calendar[0], {
+            (a.$calendarObj = myCalendarObj = new FullCalendar.Calendar(a.$calendar[0], {
+                titleFormat: function (date) {
+                    return 'Payment Details';
+                },
+                dayHeaderContent: (args) => {
+                    return moment(args.date).format('ddd')
+                },
                 slotDuration: "00:15:00",
-                slotMinTime: "08:00:00",
-                slotMaxTime: "19:00:00",
+                timeZone: 'UTC',
+                initialDate: new Date(Date.UTC(2022, 8, 6)),
                 themeSystem: "bootstrap",
                 bootstrapFontAwesome: !1,
-                buttonText: { today: "Today", month: "Month", week: "Week", day: "Day",  prev: "Prev", next: "Next" },//list: "List"//
-                initialView: "dayGridMonth",
+                buttonText: { week: "Week" },
+                initialView: "timeGridWeek",
                 handleWindowResize: !0,
-                height: l(window).height() - 200,
-                headerToolbar: { left: "prev,next today", center: "title", right: "dayGridMonth,timeGridWeek,timeGridDay" },//,listMonth
+                height: l(window).height() - 100,
+                headerToolbar: { left: "title", right: "" }, //listMonth
                 initialEvents: t,
                 editable: !0,
                 droppable: !0,
                 selectable: !0,
+                contentHeight: 1300,
                 dateClick: function (e) {
                     a.onSelect(e);
                 },
@@ -81,9 +76,9 @@
                         n = a.$formEvent[0];
                     n.checkValidity()
                         ? (a.$selectedEvent
-                              ? (a.$selectedEvent.setProp("title", l("#event-title").val()), a.$selectedEvent.setProp("classNames", [l("#event-category").val()]))
-                              : ((t = { title: l("#event-title").val(), start: a.$newEventData.date, allDay: a.$newEventData.allDay, className: l("#event-category").val() }), a.$calendarObj.addEvent(t)),
-                          a.$modal.hide())
+                            ? (a.$selectedEvent.setProp("title", l("#event-title").val()), a.$selectedEvent.setProp("classNames", ['bg-success']))
+                            : ((t = { title: l("#event-title").val(), start: a.$newEventData.date, allDay: a.$newEventData.allDay, className: 'bg-success' }), a.$calendarObj.addEvent(t)),
+                            a.$modal.hide())
                         : (e.stopPropagation(), n.classList.add("was-validated"));
                 }),
                 l(
@@ -95,7 +90,7 @@
         (l.CalendarApp = new e()),
         (l.CalendarApp.Constructor = e);
 })(window.jQuery),
-(function () {
-	"use strict";
-	window.jQuery.CalendarApp.init();
-})();
+    (function () {
+        "use strict";
+        window.jQuery.CalendarApp.init();
+    })();

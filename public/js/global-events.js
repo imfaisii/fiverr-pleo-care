@@ -9,3 +9,7 @@ Livewire.on("toast", (type, message, heading) => {
 window.addEventListener('hideModal', () => {
     $(".modal").modal('hide');
 })
+
+$('.modal').on('hidden.bs.modal', function () {
+    Livewire.emit('onModalHidden');
+});

@@ -18,6 +18,12 @@
 <link rel="stylesheet" href="{{ asset('src/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset('src/css/skin_color.css') }}">
 
+<style>
+    .w-auto .form-select {
+        margin-right: 20px;
+    }
+</style>
+
 <!-- livewire -->
 @livewireStyles
 @livewireScripts
