@@ -28,7 +28,7 @@ class CreateJobRole extends Component
         $this->validateOnly($property);
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'payment.name' => [
@@ -40,24 +40,23 @@ class CreateJobRole extends Component
         ];
     }
 
-    public function isFullDay(array $data)
+    public function isFullDay(array $data): bool
     {
         return count($data) == 3 ? true : false;
     }
 
-    public function getFormattedData($data)
+    public function getFormattedData($data): array
     {
         $weekDays = Carbon::getDays();
         $resultant = [];
 
-        // only if some payment on calendar are added
         foreach ($data as $key => $calendarEntry) {
-            $date = Carbon::parse($calendarEntry['start']);
+            $from = Carbon::parse($calendarEntry['start']);
 
             $resultant[] = [
-                'day' => $weekDays[$date->dayOfWeek],
-                'day_number' => $date->dayOfWeek,
-                'from_time' => self::isFullDay($calendarEntry) ? NULL : Carbon::parse($calendarEntry['start']),
+                'day' => $weekDays[$from->dayOfWeek],
+                'day_number' => $from->dayOfWeek,
+                'from_time' => self::isFullDay($calendarEntry) ? NULL : $from,
                 'to_time' => self::isFullDay($calendarEntry) ? NULL : Carbon::parse($calendarEntry['end']),
                 'is_full_day' => self::isFullDay($calendarEntry) ? true : false,
                 'payment_amount' => $calendarEntry['title'],
@@ -91,14 +90,15 @@ class CreateJobRole extends Component
                     foreach ($formattedData as $key => $jobRolePayment)
                         $jobRole->payments()->firstOrCreate($jobRolePayment);
                 }
-
-                self::sendSuccess("Payments were saved successfully.");
-                return Redirect::route('job-roles.list');
             });
+
+            self::sendSuccess("Payments were saved successfully.");
+            return Redirect::route('job-roles.list');
         } catch (\Exception $e) {
             self::sendException($e);
         }
     }
+    
     public function render()
     {
         return view('livewire.dashboard.job-roles.create-job-role')->extends('layouts.dashboard.app')->section('content');
