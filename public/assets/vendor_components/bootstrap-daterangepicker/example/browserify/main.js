@@ -1,4 +1,4 @@
-import '../../daterangepicker.js';
+require('../../daterangepicker.js');
 var $ = require('jquery'),
     moment = require('moment');
 
