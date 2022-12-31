@@ -28,6 +28,8 @@ class SuperAdminSeeder extends Seeder
         // adding avatar
         $superAdmin->addMedia(public_path('/images/avatar.jpg'))->preservingOriginal()->toMediaCollection('avatars');
 
+        $superAdmin->details()->create();
+
         $role = Role::whereName(Constant::SUPER_ADMIN)->first();
         $permissions = Permission::pluck('id', 'id')->all();
         $role->syncPermissions($permissions);

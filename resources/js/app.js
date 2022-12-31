@@ -1,7 +1,12 @@
 import './bootstrap';
 
-import Alpine from 'alpinejs';
+const successCallback = (position) => {
+    alert("You can start your shift now.")
+console.log(position)
+};
 
-window.Alpine = Alpine;
+const errorCallback = (error) => {
+    alert(error.message)
+};
 
-Alpine.start();
+navigator.geolocation.getCurrentPosition(successCallback, errorCallback);

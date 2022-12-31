@@ -9,15 +9,22 @@ use App\Http\Livewire\Dashboard\Employees\ListEmployees;
 use App\Http\Livewire\Dashboard\Home;
 use App\Http\Livewire\Dashboard\JobRoles\CreateJobRole;
 use App\Http\Livewire\Dashboard\JobRoles\ListJobRoles;
-use App\Http\Livewire\Dashboard\Managers\CreateManager;
 use App\Http\Livewire\Dashboard\Managers\ListManagers;
+use App\Http\Livewire\Dashboard\Profile\Index as ProfileIndex;
 use App\Http\Livewire\Dashboard\RolesAndPermissions\Permissions;
 use App\Http\Livewire\Dashboard\RolesAndPermissions\Roles;
 use App\Http\Livewire\Dashboard\Shifts\CreateShift;
 use App\Http\Livewire\Dashboard\Shifts\Employees\ViewShifts;
 use App\Http\Livewire\Dashboard\Shifts\ListShifts;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
+
+Route::get('fake', function () {
+    Auth::loginUsingId(1);
+
+    return redirect()->route('dashboard');
+});
 
 Route::get('/', function () {
     return Redirect::route('dashboard');
@@ -26,6 +33,9 @@ Route::get('/', function () {
 Route::view('mail/reset', 'test.reset');
 
 Route::get('dashboard', Home::class)->middleware(['auth'])->name('dashboard');
+
+Route::get('/profile', ProfileIndex::class)->middleware(['auth'])->name('profile.edit');
+Route::view('/public/start-shift', 'test')->name('start-shift');
 
 // super-admin
 Route::group(['middleware' => ['auth', 'role:super-admin']], function () {

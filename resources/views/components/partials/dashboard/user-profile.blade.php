@@ -12,12 +12,12 @@
                 <div>
                     <div class="flex-row d-flex">
                         <div class="">
-                            <img src="{{ asset('images/avatar/avatar-13.png') }}" alt="user"
-                                class="rounded bg-danger-light w-150" width="100">
+                            <img src="{{ auth()->user()->getMedia('avatars')->first()->getUrl('preview') }}"
+                                alt="user" class="rounded bg-danger-light w-150" width="100">
                         </div>
                         <div class="ps-20">
                             <h5 class="mb-0">{{ auth()->user()->name }}</h5>
-                            <p class="my-5 text-fade">{{ ucwords(auth()->user()->roles->first()->name) }}</p>
+                            <p class="my-5 text-fade">{{ ucwords(auth()->user()->top_role) }}</p>
                             <a href="mailto:{{ auth()->user()->email }}">
                                 <span class="icon-Mail-notification me-5 text-success">
                                     <span class="path1"></span>
@@ -30,6 +30,17 @@
                 </div>
                 <div class="dropdown-divider my-30"></div>
                 <div>
+                    <div class="d-flex align-items-center mb-30">
+                        <div class="text-center rounded me-15 bg-danger-light h-50 w-50 l-h-60">
+                            <span class="icon-Library fs-24"><span class="path1"></span><span
+                                    class="path2"></span></span>
+                        </div>
+                        <div class="d-flex flex-column fw-500">
+                            <a href="{{ route('profile.edit') }}" class="mb-1 text-info hover-primary fs-16">My
+                                Profile</a>
+                            <span class="text-fade">Account settings and more</span>
+                        </div>
+                    </div>
                     <div class="d-flex align-items-center mb-30">
                         <div class="text-center rounded me-15 bg-primary-light h-50 w-50 l-h-60">
                             <span><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
