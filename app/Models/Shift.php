@@ -10,7 +10,19 @@ class Shift extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'hourly_rate', 'start_time', 'end_time','status', 'client_id', 'employee_id', 'manager_id'
+        'uuid',
+        'name',
+        'description',
+        'hourly_rate',
+        'start_time',
+        'end_time',
+        'address_address',
+        'address_longitude',
+        'address_latitude',
+        'status',
+        'client_id',
+        'employee_id',
+        'manager_id',
     ];
 
     public function client()

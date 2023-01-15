@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ShiftController;
 use App\Http\Livewire\Dashboard\Clients\CreateClient;
 use App\Http\Livewire\Dashboard\Clients\ListClients;
 use App\Http\Livewire\Dashboard\Companies\CreateCompany;
@@ -16,21 +17,16 @@ use App\Http\Livewire\Dashboard\RolesAndPermissions\Roles;
 use App\Http\Livewire\Dashboard\Shifts\CreateShift;
 use App\Http\Livewire\Dashboard\Shifts\Employees\ViewShifts;
 use App\Http\Livewire\Dashboard\Shifts\ListShifts;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
-
-Route::get('fake', function () {
-    Auth::loginUsingId(1);
-
-    return redirect()->route('dashboard');
-});
 
 Route::get('/', function () {
     return Redirect::route('dashboard');
 });
 
-Route::view('mail/reset', 'test.reset');
+// LINK to START A PUBLIC SHIFT
+Route::get('shifts/{uuid}', [ShiftController::class, 'index'])->name('shift.view');
+Route::post('shifts', [ShiftController::class, 'check'])->name('shift.start');
 
 Route::get('dashboard', Home::class)->middleware(['auth'])->name('dashboard');
 

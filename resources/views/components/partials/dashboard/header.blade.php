@@ -135,7 +135,7 @@
                     <a href="#"
                         class="w-auto p-0 bg-transparent waves-effect waves-light dropdown-toggle l-h-12 no-shadow"
                         title="User" data-bs-toggle="modal" data-bs-target="#quick_user_toggle">
-                        <img src="{{ auth()->user()->getMedia('avatars')->first()->getUrl('preview') }}"
+                        <img src="{{ auth()->user()->getMedia('avatars')->first()?->getUrl('preview') }}"
                             class="w-40 h-40 avatar rounded-circle bg-primary-light" alt="" />
                     </a>
                 </li>

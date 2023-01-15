@@ -8,7 +8,7 @@
                         {{ $shift->hourly_rate }} £ / Hr</div>
                     <h5 class="float-start mt-0">Shift # {{ $loop->iteration }}</h5>
                     <div class="ribbon-content">
-                        <h4 class="media-heading mt-15 mb-0 px-30">
+                        <h4 class="media-heading mt-15 mb-0 px-25">
                             <a href="#">
                                 {{ $shift->manager->company->user->name }}
                             </a>

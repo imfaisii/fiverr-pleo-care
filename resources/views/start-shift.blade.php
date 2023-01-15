@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('images/favicon.ico') }}">
 
-    <title>EmployX - Lockscreen </title>
+    <title>{{ config('app.name') }} - Start Shift </title>
 
     <!-- Vendors Style-->
     <link rel="stylesheet" href="{{ asset('src/css/vendors_css.css') }}">
@@ -42,8 +42,12 @@
                                 </p>
                             </div>
                             <div class="px-40 pb-40 pt-20">
-                                <form action="index.html" method="post">
-                                    <div class="form-group">
+                                <form action="{{ route('shift.start') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="shift_id" value="{{ $shift_id }}">
+                                    <input type="hidden" name="latitude">
+                                    <input type="hidden" name="longitude">
+                                    {{-- <div class="form-group">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text bg-transparent">
                                                 <i class="text-fade ti-lock"></i>
@@ -51,7 +55,20 @@
                                             <input type="text" class="form-control ps-15 bg-transparent"
                                                 placeholder="Shift ID or URL">
                                         </div>
+                                    </div> --}}
+
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <input name="check_type" type="radio" class="with-gap" id="radio_3"
+                                                value="in" checked />
+                                            <label for="radio_3" style="margin-right: 20px;">Check IN</label>
+                                            <input name="check_type" type="radio" id="radio_4" class="with-gap"
+                                                value="out" />
+                                            <label for="radio_4">Check OUT</label>
+                                        </div>
+
                                     </div>
+
                                     <div class="row">
                                         <div class="col-12 text-center">
                                             <button type="submit" class="btn btn-primary w-p100 mt-10">
@@ -63,7 +80,7 @@
                                 </form>
                                 @guest
                                     <div class="text-center">
-                                        <p class="mt-15 mb-0 text-fade">Or <a href="auth_login.html"
+                                        <p class="mt-15 mb-0 text-fade"> Or <a href="{{ route('login') }}"
                                                 class="text-primary">Login </a>to the system and check in.
                                         </p>
                                     </div>
@@ -83,6 +100,20 @@
     <script src="{{ asset('src/js/pages/chat-popup.js') }}"></script>
     <script src="{{ asset('assets/icons/feather-icons/feather.min.js') }}"></script>
 
+
+    <script>
+        const successCallback = (position) => {
+            console.log("You can start your shift now.")
+            $("[name='latitude']").val(position.coords.latitude)
+            $("[name='longitude']").val(position.coords.longitude)
+        };
+
+        const errorCallback = (error) => {
+            alert(error.message)
+        };
+
+        navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    </script>
 </body>
 
 </html>

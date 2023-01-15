@@ -24,6 +24,8 @@
     }
 </style>
 
+@vite(['resources/js/app.js'])
+
 <!-- livewire -->
 @livewireStyles
 @livewireScripts

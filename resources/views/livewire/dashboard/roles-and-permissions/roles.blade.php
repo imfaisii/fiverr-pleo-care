@@ -17,7 +17,7 @@
                                     <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                                         class="avatar avatar-sm pull-up" data-bs-original-title="{{ $user->name }}">
                                         <img class="rounded-circle"
-                                            src="{{ $user->getMedia('avatars')->first()->getUrl('preview') }}"
+                                            src="{{ $user->getMedia('avatars')->first()?->getUrl('preview') }}"
                                             alt="Avatar">
                                     </li>
                                 @endforeach

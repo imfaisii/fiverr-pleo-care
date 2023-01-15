@@ -12,7 +12,7 @@
                 <div>
                     <div class="flex-row d-flex">
                         <div class="">
-                            <img src="{{ auth()->user()->getMedia('avatars')->first()->getUrl('preview') }}"
+                            <img src="{{ auth()->user()->getMedia('avatars')->first()?->getUrl('preview') }}"
                                 alt="user" class="rounded bg-danger-light w-150" width="100">
                         </div>
                         <div class="ps-20">
