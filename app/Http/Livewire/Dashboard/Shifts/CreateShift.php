@@ -7,22 +7,24 @@ use App\Models\JobRole;
 use Carbon\Carbon;
 use Exception;
 use Livewire\Component;
-use Ramsey\Uuid\Uuid;
 
 class CreateShift extends Component
 {
-    public $shift, $clientData, $expectedPay, $clients, $jobRoles;
+    public $shift,
+        $clientData,
+        $expectedPay,
+        $clients,
+        $jobRoles,
+        $description,
+        $address,
+        $address_longitude,
+        $address_latitude;
 
     public function mount()
     {
         $this->shift['uuid'] = \Illuminate\Support\Str::uuid()->toString();
         $this->clients = Client::whereBelongsTo(auth()->user()->manager)->get();
         $this->jobRoles = JobRole::where('company_id', auth()->user()->manager->company->id)->get();
-
-        // hard coding
-        $this->shift['address_latitude'] = '32.596003';
-        $this->shift['address_longitude'] = '74.0835607';
-        $this->shift['address_address'] = 'Gujrat, Pakistan';
     }
 
     public function rules()
@@ -30,25 +32,53 @@ class CreateShift extends Component
         return [
             'shift.name' => ['required', 'string'],
             'shift.job_role_id' => ['required', 'exists:job_roles,id'],
-            'shift.description' => ['required', 'string'],
             'shift.start_time' => ['required'],
             'shift.end_time' => ['required', 'after:shift.start_time'],
             'shift.client_id' => ['required', 'exists:clients,id'],
-            // 'shift.address_address' => ['required'],
-            // 'shift.address_longitude' => ['required'],
-            // 'shift.address_latitude' => ['required'],
+            'address' => ['required'],
+            'address_longitude' => ['required'],
+            'address_latitude' => ['required'],
+            'description' => ['required', 'string'],
         ];
     }
 
     public function updated($property, $value)
     {
+        if ($property == 'description') {
+            $this->shift['description'] = $value;
+        }
+
+        if ($property == 'address') {
+            $this->shift['address'] = $value;
+        }
+
+        if ($property == 'address_longitude') {
+            $this->shift['address_longitude'] = $value;
+        }
+
+        if ($property == 'address_latitude') {
+            $this->shift['address_latitude'] = $value;
+        }
+
         if ($property == 'shift.client_id') {
             $this->clientData = Client::find($value);
         }
 
-        if (!array_diff(['start_time', 'end_time', 'hourly_rate'], array_keys($this->shift))) {
+        if (!array_diff(['start_time', 'end_time', 'job_role_id'], array_keys($this->shift))) {
             $startTime = Carbon::parse($this->shift['start_time']);
             $endTime = Carbon::parse($this->shift['end_time']);
+
+            $jobRole = JobRole::find($this->shift['job_role_id'])->with('payments')->first();
+            $perDayPayments = $jobRole->payments;
+
+
+            foreach ($perDayPayments as $payment) {
+
+                $commonMinutes = $this->calculateMinutes(
+                    ['start' => $startTime, 'end' => $endTime],
+                    ['start' => $payment->from_time, 'end' => $payment->to_time]
+                );
+            }
 
             if (filled($this->shift['hourly_rate']) && $startTime->lt($endTime)) {
                 $minutes = $startTime->diffInMinutes($endTime);
@@ -56,7 +86,6 @@ class CreateShift extends Component
             } else {
                 $this->expectedPay = null;
             }
-
         } else {
             $this->expectedPay = null;
         }
@@ -64,10 +93,31 @@ class CreateShift extends Component
         $this->validateOnly($property);
     }
 
+    public function calculateMinutes(array $input, array $paymentTime)
+    {
+        dd(
+            $input['start'],
+            $input['end'],
+            $paymentTime['start'],
+            $paymentTime['end'],
+            $this->findCommonMinutes(
+                $input['start'],
+                $input['end'],
+                $paymentTime['start'],
+                $paymentTime['end']
+            )
+        );
+    }
+
+    public function findCommonMinutes($start1, $end1, $start2, $end2)
+    {
+
+    }
+
     public function store()
     {
         $this->validate();
-
+        dd($this->shift);
         try {
             auth()->user()->manager->shifts()->firstOrCreate($this->shift);
 

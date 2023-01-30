@@ -98,9 +98,11 @@ class CreateJobRole extends Component
             self::sendException($e);
         }
     }
-    
+
     public function render()
     {
-        return view('livewire.dashboard.job-roles.create-job-role')->extends('layouts.dashboard.app')->section('content');
+        return view('livewire.dashboard.job-roles.create-job-role')
+            ->extends('layouts.dashboard.app')
+            ->section('content');
     }
 }

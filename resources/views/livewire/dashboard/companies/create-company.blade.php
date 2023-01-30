@@ -44,7 +44,7 @@
                     <div class="mt-2 mb-4 text-center">
                         <a href="#" class="text-success">
                             <span>
-                                <img src="{{ asset('images/logo-dark-text.png') }}" alt="" height="60">
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="{{ asset('images/logo-dark-text.png') }}" alt="" height="60">
                             </span>
                         </a>
                     </div>
@@ -90,7 +90,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-center">
-                    <img src="{{ asset('images/avatar/avatar-13.png') }}"
+                    <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="{{ asset('images/avatar/avatar-13.png') }}"
                         class="bg-light h-100 rounded-circle avatar-lg img-thumbnail" style="width:100px;"
                         alt="profile-image">
 

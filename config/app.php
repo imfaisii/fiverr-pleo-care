@@ -56,8 +56,6 @@ return [
 
     'url' => env('APP_URL', 'http://fiverr-pleocare.test'),
 
-    'shift_url' => env('PUBLIC_SHIFT_URL', 'http://localhost:3000/shift'),
-
     'asset_url' => env('ASSET_URL'),
 
     'support' => [
@@ -75,7 +73,7 @@ return [
     |
      */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Karachi',
 
     /*
     |--------------------------------------------------------------------------

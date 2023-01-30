@@ -2,7 +2,7 @@
     <div class="col-xl-4 col-lg-5">
         <div class="text-center card">
             <div class="card-body">
-                <img src="{{ $user->getMedia('avatars')->first()->getUrl('preview') }}"
+                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="{{ $user->getMedia('avatars')->first()->getUrl('preview') }}"
                     class="w-90 bg-light h-100 rounded-circle avatar-lg img-thumbnail" alt="profile-image">
 
                 <h4 class="mt-2 mb-0">{{ $user->name }}</h4>

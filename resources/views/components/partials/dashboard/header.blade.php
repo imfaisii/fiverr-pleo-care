@@ -4,12 +4,20 @@
         <a href="index.html" class="logo">
             <!-- logo-->
             <div class="w-40 logo-mini">
-                <span class="light-logo"><img src="../../../images/logo-letter.png" alt="logo"></span>
-                <span class="dark-logo"><img src="../../../images/logo-letter-white.png" alt="logo"></span>
+                <span class="light-logo"><img
+                        onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
+                        src="../../../images/logo-letter.png" alt="logo"></span>
+                <span class="dark-logo"><img
+                        onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
+                        src="../../../images/logo-letter-white.png" alt="logo"></span>
             </div>
             <div class="logo-lg">
-                <span class="light-logo"><img src="../../../images/logo-light-text.png" alt="logo"></span>
-                <span class="dark-logo"><img src="../../../images/logo-light-text.png" alt="logo"></span>
+                <span class="light-logo"><img
+                        onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
+                        src="../../../images/logo-light-text.png" alt="logo"></span>
+                <span class="dark-logo"><img
+                        onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
+                        src="../../../images/logo-light-text.png" alt="logo"></span>
             </div>
         </a>
     </div>
@@ -135,7 +143,8 @@
                     <a href="#"
                         class="w-auto p-0 bg-transparent waves-effect waves-light dropdown-toggle l-h-12 no-shadow"
                         title="User" data-bs-toggle="modal" data-bs-target="#quick_user_toggle">
-                        <img src="{{ auth()->user()->getMedia('avatars')->first()?->getUrl('preview') }}"
+                        <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
+                            src="{{ auth()->user()->getMedia('avatars')->first()?->getUrl('preview') }}"
                             class="w-40 h-40 avatar rounded-circle bg-primary-light" alt="" />
                     </a>
                 </li>

@@ -93,7 +93,7 @@
                                 style="font-family: Montserrat, -apple-system, 'Segoe UI', sans-serif; padding: 48px; text-align: center;"
                                 align="center">
                                 <a href="{{ config('app.url') }}">
-                                    <img src="https://pleocare.lillahbricks.com/images/logo-letter.png" width="155"
+                                    <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="https://pleocare.lillahbricks.com/images/logo-letter.png" width="155"
                                         alt="{{ config('app.name') }} Logo"
                                         style="border: 0; max-width: 100%; line-height: 100%; vertical-align: middle;">
                                 </a>
@@ -177,19 +177,19 @@
                                             style="font-family: Montserrat, -apple-system, 'Segoe UI', sans-serif; font-size: 12px; padding-left: 48px; padding-right: 48px; --text-opacity: 1; color: #eceff1; color: rgba(236, 239, 241, var(--text-opacity));">
                                             <p align="center" style="cursor: default; margin-bottom: 16px;">
                                                 <a href="#"
-                                                    style="--text-opacity: 1; color: #263238; color: rgba(38, 50, 56, var(--text-opacity)); text-decoration: none;"><img
+                                                    style="--text-opacity: 1; color: #263238; color: rgba(38, 50, 56, var(--text-opacity)); text-decoration: none;"><img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
                                                         src="https://pixinvent.com/demo/vuexy-mail-template/images/facebook.png"
                                                         width="17" alt="Facebook"
                                                         style="border: 0; max-width: 100%; line-height: 100%; vertical-align: middle; margin-right: 12px;"></a>
                                                 &bull;
                                                 <a href="#"
-                                                    style="--text-opacity: 1; color: #263238; color: rgba(38, 50, 56, var(--text-opacity)); text-decoration: none;"><img
+                                                    style="--text-opacity: 1; color: #263238; color: rgba(38, 50, 56, var(--text-opacity)); text-decoration: none;"><img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
                                                         src="https://pixinvent.com/demo/vuexy-mail-template/images/twitter.png"
                                                         width="17" alt="Twitter"
                                                         style="border: 0; max-width: 100%; line-height: 100%; vertical-align: middle; margin-right: 12px;"></a>
                                                 &bull;
                                                 <a href="#"
-                                                    style="--text-opacity: 1; color: #263238; color: rgba(38, 50, 56, var(--text-opacity)); text-decoration: none;"><img
+                                                    style="--text-opacity: 1; color: #263238; color: rgba(38, 50, 56, var(--text-opacity)); text-decoration: none;"><img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
                                                         src="https://pixinvent.com/demo/vuexy-mail-template/images/instagram.png"
                                                         width="17" alt="Instagram"
                                                         style="border: 0; max-width: 100%; line-height: 100%; vertical-align: middle; margin-right: 12px;"></a>

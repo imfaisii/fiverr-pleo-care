@@ -16,7 +16,7 @@
                                 @foreach ($users as $user)
                                     <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                                         class="avatar avatar-sm pull-up" data-bs-original-title="{{ $user->name }}">
-                                        <img class="rounded-circle"
+                                        <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" class="rounded-circle"
                                             src="{{ $user->getMedia('avatars')->first()?->getUrl('preview') }}"
                                             alt="Avatar">
                                     </li>
@@ -47,7 +47,7 @@
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="d-flex justify-content-center h-100">
-                            <img src="{{ asset('images/faq-illustrations.svg') }}" class="mt-2 img-fluid" alt="Image"
+                            <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="{{ asset('images/faq-illustrations.svg') }}" class="mt-2 img-fluid" alt="Image"
                                 style="height:80px;" />
                         </div>
                     </div>

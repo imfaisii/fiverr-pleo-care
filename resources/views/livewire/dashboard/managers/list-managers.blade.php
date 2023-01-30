@@ -25,7 +25,7 @@
                     <div class="mt-2 mb-4 text-center">
                         <a href="#" class="text-success">
                             <span>
-                                <img src="{{ asset('images/logo-dark-text.png') }}" alt="" height="60">
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="{{ asset('images/logo-dark-text.png') }}" alt="" height="60">
                             </span>
                         </a>
                     </div>

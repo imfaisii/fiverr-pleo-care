@@ -7,7 +7,7 @@
                         <div class="box-body" style="height:18rem;">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h4 class="mb-0 me-10 fw-600">Jobs for Me</h4>
-                                <img src="../../../images/svg-icon/img-1.png" class="img-fluid max-w-150 image-1"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/svg-icon/img-1.png" class="img-fluid max-w-150 image-1"
                                     alt="" />
                             </div>
                             <div>
@@ -26,7 +26,7 @@
                         <div class="box-body" style="height:18rem;">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h4 class="mb-0 me-10 fw-600">My Learning</h4>
-                                <img src="../../../images/svg-icon/img-2.png " class="img-fluid max-w-150 image-1"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/svg-icon/img-2.png " class="img-fluid max-w-150 image-1"
                                     alt="" />
                             </div>
                             <div>
@@ -45,7 +45,7 @@
                         <div class="box-body" style="height:18rem;">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h4 class="mb-0 me-10 fw-600">My Social Story</h4>
-                                <img src="../../../images/svg-icon/img-3.png " class="img-fluid max-w-150 image-1"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/svg-icon/img-3.png " class="img-fluid max-w-150 image-1"
                                     alt="" />
                             </div>
                             <div>
@@ -67,7 +67,7 @@
                 <div class="box-body bb-1">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center justify-content-between">
-                            <img src="../../../images/avatar/avatar-15.png"
+                            <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/avatar/avatar-15.png"
                                 class="me-10 avatar avatar-lg bg-primary-light" alt="" />
                             <div>
                                 <h4 class="mb-0 fw-500">Nil Yeager</h4>
@@ -381,7 +381,7 @@
                     <div class="application-bx">
                         <div class="d-flex align-items-center mb-30">
                             <div class="me-15 w-60">
-                                <img src="../../../images/avatar/avatar-1.png"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/avatar/avatar-1.png"
                                     class="avatar avatar-lg rounded100 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500 text-overflow">
@@ -410,7 +410,7 @@
                         </div>
                         <div class="d-flex align-items-center mb-30">
                             <div class="me-15 w-60">
-                                <img src="../../../images/avatar/avatar-10.png"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/avatar/avatar-10.png"
                                     class="avatar avatar-lg rounded100 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500 text-overflow">
@@ -439,7 +439,7 @@
                         </div>
                         <div class="d-flex align-items-center mb-30">
                             <div class="me-15 w-60">
-                                <img src="../../../images/avatar/avatar-11.png"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/avatar/avatar-11.png"
                                     class="avatar avatar-lg rounded100 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500 text-overflow">
@@ -468,7 +468,7 @@
                         </div>
                         <div class="d-flex align-items-center mb-30">
                             <div class="me-15 w-60">
-                                <img src="../../../images/avatar/avatar-12.png"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/avatar/avatar-12.png"
                                     class="avatar avatar-lg rounded100 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500 text-overflow">
@@ -497,7 +497,7 @@
                         </div>
                         <div class="d-flex align-items-center mb-30">
                             <div class="me-15 w-60">
-                                <img src="../../../images/avatar/avatar-5.png"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/avatar/avatar-5.png"
                                     class="avatar avatar-lg rounded100 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500 text-overflow">
@@ -526,7 +526,7 @@
                         </div>
                         <div class="d-flex align-items-center mb-30">
                             <div class="me-15 w-60">
-                                <img src="../../../images/avatar/avatar-6.png"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/avatar/avatar-6.png"
                                     class="avatar avatar-lg rounded100 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500 text-overflow">
@@ -555,7 +555,7 @@
                         </div>
                         <div class="d-flex align-items-center">
                             <div class="me-15 w-60">
-                                <img src="../../../images/avatar/avatar-7.png"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="../../../images/avatar/avatar-7.png"
                                     class="avatar avatar-lg rounded100 bg-primary-light" alt="" />
                             </div>
                             <div class="d-flex flex-column flex-grow-1 fw-500 text-overflow">
