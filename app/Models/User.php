@@ -43,7 +43,9 @@ class User extends Authenticatable implements HasMedia
 
     public function getTopRoleAttribute()
     {
-        return $this->roles->first()?->name;
+        if (is_object($this->roles)) {
+            return $this->roles->first()?->name;
+        }
     }
 
     public function getFirstNameAttribute()

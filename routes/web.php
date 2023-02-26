@@ -17,50 +17,55 @@ use App\Http\Livewire\Dashboard\RolesAndPermissions\Roles;
 use App\Http\Livewire\Dashboard\Shifts\CreateShift;
 use App\Http\Livewire\Dashboard\Shifts\Employees\ViewShifts;
 use App\Http\Livewire\Dashboard\Shifts\ListShifts;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return Redirect::route('dashboard');
+Route::group(['middleware' => 'web'], function () {
+    // Welcome
+    Route::view('/', 'welcome')->name('welcome');
+
+    // LINK to START A PUBLIC SHIFT
+    Route::view('/public/start-shift', 'test')->name('start-shift');
+
+    Route::get('/shifts/{uuid}', [ShiftController::class, 'index'])->name('shift.view');
+    Route::post('/shifts', [ShiftController::class, 'check'])->name('shift.start');
 });
 
-// LINK to START A PUBLIC SHIFT
-Route::get('shifts/{uuid}', [ShiftController::class, 'index'])->name('shift.view');
-Route::post('shifts', [ShiftController::class, 'check'])->name('shift.start');
+/* ========= Authenticated Routes ========= */
 
-Route::get('dashboard', Home::class)->middleware(['auth'])->name('dashboard');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/dashboard', Home::class)->name('dashboard');
+    Route::get('/profile', ProfileIndex::class)->name('profile.edit');
+});
 
-Route::get('/profile', ProfileIndex::class)->middleware(['auth'])->name('profile.edit');
-Route::view('/public/start-shift', 'test')->name('start-shift');
 
 // super-admin
 Route::group(['middleware' => ['auth', 'role:super-admin']], function () {
-    Route::get('roles', Roles::class)->name('roles');
-    Route::get('permissions', Permissions::class)->name('permissions');
-    Route::get('company/create', CreateCompany::class)->name('companies.create');
-    Route::get('companies', ListCompanies::class)->name('companies.list');
+    Route::get('/roles', Roles::class)->name('roles');
+    Route::get('/permissions', Permissions::class)->name('permissions');
+    Route::get('/company/create', CreateCompany::class)->name('companies.create');
+    Route::get('/companies', ListCompanies::class)->name('companies.list');
 });
 
 // company
 Route::group(['middleware' => ['auth', 'role:company']], function () {
-    Route::get('managers', ListManagers::class)->name('managers.list');
-    Route::get('job-roles/create/{jobRole?}', CreateJobRole::class)->name('job-roles.create');
-    Route::get('job-roles', ListJobRoles::class)->name('job-roles.list');
+    Route::get('/managers', ListManagers::class)->name('managers.list');
+    Route::get('/job-roles/create/{jobRole?}', CreateJobRole::class)->name('job-roles.create');
+    Route::get('/job-roles', ListJobRoles::class)->name('job-roles.list');
 });
 
 // manager
 Route::group(['middleware' => ['auth', 'role:manager']], function () {
-    Route::get('employee/create', CreateEmployee::class)->name('employees.create');
-    Route::get('employees', ListEmployees::class)->name('employees.list');
-    Route::get('client/create', CreateClient::class)->name('clients.create');
-    Route::get('clients', ListClients::class)->name('clients.list');
-    Route::get('shift/create', CreateShift::class)->name('shifts.create');
-    Route::get('shifts', ListShifts::class)->name('shifts.list');
+    Route::get('/employee/create', CreateEmployee::class)->name('employees.create');
+    Route::get('/employees', ListEmployees::class)->name('employees.list');
+    Route::get('/client/create', CreateClient::class)->name('clients.create');
+    Route::get('/clients', ListClients::class)->name('clients.list');
+    Route::get('/shift/create', CreateShift::class)->name('shifts.create');
+    Route::get('/shifts', ListShifts::class)->name('shifts.list');
 });
 
 // company
 Route::group(['middleware' => ['auth', 'role:employee']], function () {
-    Route::get('view/shifts', ViewShifts::class)->name('employees.shifts.view');
+    Route::get('/view/shifts', ViewShifts::class)->name('employees.shifts.view');
 });
 
 require __DIR__ . '/auth.php';

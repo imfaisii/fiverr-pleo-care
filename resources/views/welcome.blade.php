@@ -28,7 +28,9 @@
             <div class="col-md-8 col-12">
                 <div class="box box-transparent no-border no-shadow">
                     <div class="box-body text-center">
-                        <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="{{ asset('images/logo-light-text4.png') }}" class="mb-20" alt="" />
+                        <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
+                            style="width: 200px;" src="{{ asset('images/logo-light-text.png') }}" class="mb-20"
+                            alt="Company Logo" />
                         <h1 class="mt-20 fs-60 text-white">Coming Soon</h1>
 
                         {{-- <h3 class="mb-20 text-fade">Next generation of frameworks for admin design</h3> --}}

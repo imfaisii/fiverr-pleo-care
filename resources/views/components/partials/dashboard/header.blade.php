@@ -1,23 +1,23 @@
 <header class="main-header">
     <div class="d-flex align-items-center logo-box justify-content-start">
         <!-- Logo -->
-        <a href="index.html" class="logo">
+        <a href="{{ route('dashboard') }}" class="logo">
             <!-- logo-->
             <div class="w-40 logo-mini">
                 <span class="light-logo"><img
                         onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
-                        src="../../../images/logo-letter.png" alt="logo"></span>
+                        src="{{ asset('images/logo-letter.png') }}" alt="logo"></span>
                 <span class="dark-logo"><img
                         onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
-                        src="../../../images/logo-letter-white.png" alt="logo"></span>
+                        src="{{ asset('images/logo-letter-white.png') }}" alt="logo"></span>
             </div>
             <div class="logo-lg">
                 <span class="light-logo"><img
                         onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
-                        src="../../../images/logo-light-text.png" alt="logo"></span>
+                        src="{{ asset('images/logo-light-text.png') }}" alt="logo"></span>
                 <span class="dark-logo"><img
                         onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
-                        src="../../../images/logo-light-text.png" alt="logo"></span>
+                        src="{{ asset('images/logo-light-text.png') }}" alt="logo"></span>
             </div>
         </a>
     </div>

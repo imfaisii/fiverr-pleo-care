@@ -33,7 +33,8 @@
                     <div class="col-lg-5 col-md-5 col-12">
                         <div class="bg-white rounded10 shadow-lg">
                             <div class="content-top-agile px-20 pt-40 pb-0">
-                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';" src="{{ asset('images/avatar/avatar-1.png') }}" alt="User Image"
+                                <img onerror="if (this.src != 'error.jpg') this.src = '/images/404-placeholder.png';"
+                                    src="{{ asset('images/avatar/avatar-1.png') }}" alt="User Image"
                                     class="bg-light rounded-circle">
                                 <h2 class="text-primary fw-600">
                                     {{ auth()->check() ? auth()->user()->name : 'Guest User' }}</h2>
