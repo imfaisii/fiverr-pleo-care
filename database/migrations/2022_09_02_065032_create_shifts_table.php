@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\Constant;
+use App\Enums\ShiftsEnum;
 use App\Models\Client;
 use App\Models\Employee;
 use App\Models\JobRole;
@@ -28,7 +29,7 @@ return new class extends Migration
             $table->text('address_address');
             $table->string('address_latitude');
             $table->string('address_longitude');
-            $table->string('status')->default(Constant::CREATED);
+            $table->string('status')->default(ShiftsEnum::ACTIVE);
             $table->foreignIdFor(JobRole::class);
             $table->foreignIdFor(Client::class);
             $table->foreignIdFor(Employee::class)->nullable();

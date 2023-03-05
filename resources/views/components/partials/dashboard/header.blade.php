@@ -32,22 +32,25 @@
                         <i data-feather="menu"></i>
                     </a>
                 </li>
-                <li class="btn-group d-lg-inline-flex d-none">
+                {{-- <li class="btn-group d-lg-inline-flex d-none">
                     <div class="app-menu">
                         <div class="mx-5 search-bx">
                             <form>
                                 <div class="input-group">
                                     <input type="search" class="form-control" placeholder="Search">
                                     <div class="input-group-append">
-                                        <button class="btn" type="submit" id="button-addon3"><i
-                                                class="icon-Search"><span class="path1"></span><span
-                                                    class="path2"></span></i></button>
+                                        <button class="btn" type="submit" id="button-addon3">
+                                            <i class="icon-Search">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
-                </li>
+                </li> --}}
             </ul>
         </div>
 
@@ -62,7 +65,7 @@
                         </span>
                     </label>
                 </li>
-                <li class="dropdown notifications-menu btn-group ">
+                {{-- <li class="dropdown notifications-menu btn-group ">
                     <a href="#" class="waves-effect waves-light btn-primary-light svg-bt-icon"
                         data-bs-toggle="dropdown" title="Notifications">
                         <i data-feather="bell"></i>
@@ -131,7 +134,7 @@
                             <a href="component_notification.html">View all</a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <li class="btn-group nav-item d-xl-inline-flex d-none">
                     <a href="#" data-provide="fullscreen"
                         class="waves-effect waves-light nav-link btn-primary-light svg-bt-icon" title="Full Screen">

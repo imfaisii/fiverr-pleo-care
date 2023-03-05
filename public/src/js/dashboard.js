@@ -443,4 +443,3 @@ function toggleSeries(checkbox) {
     chart.toggleSeries(checkbox.value)
 }
 
-

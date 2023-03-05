@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\GeneralStatus;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,17 +36,23 @@ class User extends Authenticatable implements HasMedia
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'status' => GeneralStatus::class
     ];
 
     protected $with = ['details'];
 
-    protected $appends = ['top_role', 'first_name', 'last_name'];
+    protected $appends = ['top_role', 'first_name', 'last_name', 'days_since_join'];
 
     public function getTopRoleAttribute()
     {
         if (is_object($this->roles)) {
             return $this->roles->first()?->name;
         }
+    }
+
+    public function getDaysSinceJoinAttribute()
+    {
+        return $this->created_at->diffInDays();
     }
 
     public function getFirstNameAttribute()
@@ -58,6 +65,11 @@ class User extends Authenticatable implements HasMedia
         return Arr::last(explode(" ", $this->name));
     }
 
+    // public function getUserAgentAttribute()
+    // {
+    //     return $this->getUserAgents(1);
+    // }
+
     public function getUserAgents($count = 5)
     {
         $agents = $this->authentications->map(function ($log) {
@@ -69,9 +81,11 @@ class User extends Authenticatable implements HasMedia
                 'platform' => $agent->platform(),
                 'browser' => $agent->browser(),
                 'login_at' => Carbon::parse($log->login_at)->format('l M d g:i a'),
+                'logout_at' => Carbon::parse($log->logout_at)->format('l M d g:i a'),
                 'country' => $log->location['country'],
+                'city' => $log->location['city'],
                 'ip' => $log->location['ip'],
-                'timezone' => $log->location['timezone'],
+                'timezone' => $log->location['timezone']
             ];
         });
 
@@ -99,5 +113,10 @@ class User extends Authenticatable implements HasMedia
     public function manager()
     {
         return $this->hasOne(Manager::class);
+    }
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
     }
 }

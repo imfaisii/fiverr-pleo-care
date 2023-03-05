@@ -20,6 +20,11 @@ class Employee extends Model
         'manager_id'
     ];
 
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class, 'employee_id')->completed();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

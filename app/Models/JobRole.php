@@ -20,6 +20,11 @@ class JobRole extends Model
         });
     }
 
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class, 'job_role_id');
+    }
+
     public function company()
     {
         return $this->belongsTo(Company::class);

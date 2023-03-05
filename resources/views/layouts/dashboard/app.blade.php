@@ -11,7 +11,6 @@
 <body class="fixed hold-transition light-skin sidebar-mini theme-primary">
 
     <div class="wrapper">
-        <div id="loader"></div>
 
         <!-- header -->
         <x-partials.dashboard.header />
@@ -45,6 +44,35 @@
 
     <!-- Page Content overlay -->
     @include('partials.dashboard.scripts')
+    <style>
+        #nprogress .bar {
+            background: #dc3545 !important
+        }
+    </style>
+    <script>
+        // Show the progress bar
+        NProgress.start();
+
+        var interval = setInterval(function() {
+            NProgress.inc();
+        }, 1000);
+
+        window.addEventListener('load', function() {
+            clearInterval(interval);
+            NProgress.done();
+
+            Livewire.hook('message.sent', (message, component) => {
+                NProgress.start();
+            })
+            Livewire.hook('message.received', (message, component) => {
+                NProgress.done();
+            })
+        });
+
+        window.addEventListener('beforeunload', function() {
+            NProgress.start();
+        });
+    </script>
     @stack('extended-js')
 </body>
 
