@@ -16,8 +16,8 @@ final class ShiftsTable extends PowerGridComponent
 
     public function delete(Shift $shift)
     {
-        if (in_array($shift->status, [Constant::IN_PROGRESS, Constant::COMPLETED])) {
-            $this->emit('toast', 'error', 'Error Notfication', 'Cannot delete completed or assigned shift.');
+        if (in_array($shift->status, [Constant::COMPLETED])) {
+            $this->emit('toast', 'error', 'Error Notfication', 'Cannot delete completed  shift.');
             return;
         }
 
@@ -94,19 +94,10 @@ final class ShiftsTable extends PowerGridComponent
         return PowerGrid::eloquent()
             ->addColumn('name')
             ->addColumn('description')
-            ->addColumn('hourly_rate')
+            ->addColumn('expected_pay', fn (Shift $model) => "$model->expected_pay /-")
             ->addColumn('start_time_formatted', fn (Shift $model) => Carbon::parse($model->start_time)->format('d/m/Y H:i:s'))
             ->addColumn('end_time_formatted', fn (Shift $model) => Carbon::parse($model->end_time)->format('d/m/Y H:i:s'))
-            ->addColumn('status', function (Shift $model) {
-                if ($model->status == Constant::COMPLETED)
-                    $class = "badge badge-success";
-                else if ($model->status == Constant::IN_PROGRESS)
-                    $class = "badge badge-warning";
-                else
-                    $class = "badge badge-info";
-
-                return '<span class="' . $class . '">' . $model->status . '</span>';
-            })
+            ->addColumn('status')
             ->addColumn('client.name')
             ->addColumn('employee.name', function (Shift $model) {
                 return $model->employee ? $model->employee->user->name : 'Not Assigned';
@@ -140,7 +131,7 @@ final class ShiftsTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('HOURLY RATE', 'hourly_rate'),
+            Column::make('EXPECTED PAY', 'expected_pay'),
 
             Column::make('START TIME', 'start_time_formatted', 'start_time')
                 ->searchable()

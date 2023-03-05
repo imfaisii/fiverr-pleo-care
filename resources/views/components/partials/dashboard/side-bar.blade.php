@@ -69,52 +69,52 @@
                     @endrole
 
                     @role(\App\Constants\Constant::COMPANY)
-                    <li class="treeview">
-                        <a href="#">
-                            <i data-feather="users"></i>
-                            <span>Managers</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-right pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li @if (checkStatus('managers.list')) class='active' @endif><a
-                                    href="{{ route('managers.list') }}">
-                                    <i class="icon-Commit">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>Create & Listings
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i data-feather="thumbs-up"></i>
-                            <span>Job Roles</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-right pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li @if (checkStatus('job-roles.create')) class='active' @endif>
-                                <a href="{{ route('job-roles.create') }}">
-                                    <i class="icon-Commit">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>Create New
-                                </a>
-                            </li>
-                            <li @if (checkStatus('job-roles.list')) class='active' @endif><a
-                                    href="{{ route('job-roles.list') }}">
-                                    <i class="icon-Commit">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>Listings
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i data-feather="users"></i>
+                                <span>Managers</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-right pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li @if (checkStatus('managers.list')) class='active' @endif><a
+                                        href="{{ route('managers.list') }}">
+                                        <i class="icon-Commit">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Create & Listings
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i data-feather="thumbs-up"></i>
+                                <span>Job Roles</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-right pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li @if (checkStatus('job-roles.create')) class='active' @endif>
+                                    <a href="{{ route('job-roles.create') }}">
+                                        <i class="icon-Commit">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Create New
+                                    </a>
+                                </li>
+                                <li @if (checkStatus('job-roles.list')) class='active' @endif><a
+                                        href="{{ route('job-roles.list') }}">
+                                        <i class="icon-Commit">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Listings
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     @endrole
 
                     @role(\App\Constants\Constant::MANAGER)
@@ -197,6 +197,14 @@
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>Listings
+                                    </a>
+                                </li>
+                                <li @if (checkStatus('shifts.proposals')) class='active' @endif><a
+                                        href="{{ route('shifts.proposals') }}">
+                                        <i class="icon-Commit">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Proposals
                                     </a>
                                 </li>
                             </ul>

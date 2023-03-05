@@ -52,7 +52,7 @@ class User extends Authenticatable implements HasMedia
 
     public function getDaysSinceJoinAttribute()
     {
-        return $this->created_at->diffInDays();
+        return $this->created_at?->diffInDays();
     }
 
     public function getFirstNameAttribute()
@@ -64,11 +64,6 @@ class User extends Authenticatable implements HasMedia
     {
         return Arr::last(explode(" ", $this->name));
     }
-
-    // public function getUserAgentAttribute()
-    // {
-    //     return $this->getUserAgents(1);
-    // }
 
     public function getUserAgents($count = 5)
     {

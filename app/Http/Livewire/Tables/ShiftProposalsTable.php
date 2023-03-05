@@ -2,18 +2,29 @@
 
 namespace App\Http\Livewire\Tables;
 
-use App\Constants\Constant;
-use App\Models\User;
+use App\Enums\ShiftsEnum;
+use App\Models\ShiftProposal;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class UsersTable extends PowerGridComponent
+final class ShiftProposalsTable extends PowerGridComponent
 {
     use ActionButton;
 
+    public function proposalUpdate(ShiftProposal $model, string $status)
+    {
+        $model->load('shift');
+        if ($model->shift->status->value !== ShiftsEnum::COMPLETED) {
+            $model->update(['status' => $status, 'manager_id' => auth()->user()->manager->id]);
+
+            $this->emit('toast', 'success', 'Success Notfication', 'Shift status was updated successfully.');
+        } else {
+            $this->emit('toast', 'error', 'Error Notfication', 'Cannot change status of already completed shift.');
+        }
+    }
     /*
     |--------------------------------------------------------------------------
     |  Features Setup
@@ -23,14 +34,16 @@ final class UsersTable extends PowerGridComponent
     */
     public function setUp(): array
     {
+        $this->showCheckBox();
+
         return [
             Exportable::make('export')
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()->showSearchInput()->showToggleColumns(),
+            Header::make()->showSearchInput(),
             Footer::make()
                 ->showPerPage()
-                ->showRecordCount('full'),
+                ->showRecordCount(),
         ];
     }
 
@@ -45,11 +58,11 @@ final class UsersTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\User>
+     * @return Builder<\App\Models\ShiftProposal>
      */
     public function datasource(): Builder
     {
-        return User::query()->with('roles');
+        return ShiftProposal::query()->where('company_id', auth()->user()->manager->company_id)->with(['shift', 'employee.user', 'manager.user']);
     }
 
     /*
@@ -77,21 +90,25 @@ final class UsersTable extends PowerGridComponent
     | Make Datasource fields available to be used as columns.
     | You can pass a closure to transform/modify the data.
     |
+    | ❗ IMPORTANT: When using closures, you must escape any value coming from
+    |    the database using the `e()` Laravel Helper function.
+    |
     */
     public function addColumns(): PowerGridEloquent
     {
         return PowerGrid::eloquent()
-            ->addColumn('name')
-            ->addColumn('email')
-            ->addColumn('roles', function (User $model) {
-                $roles = $model->roles->pluck('name');
-                $html = '';
+            ->addColumn('shift_id', fn (ShiftProposal $model) => $model->shift->address_address)
+            ->addColumn('employee_id', fn (ShiftProposal $model) => $model->employee->user->name)
+            ->addColumn('manager_id', fn (ShiftProposal $model) => $model->manager?->user?->name ?? 'No manager yet')
+            ->addColumn('status')
 
-                foreach ($roles as $key => $value) $html .= '<span class="badge badge-success">' . $value . '</span>';
-
-                return $html == '' ? 'No roles' : $html;
+            /** Example of custom column using a closure **/
+            ->addColumn('status_lower', function (ShiftProposal $model) {
+                return strtolower(e($model->status));
             })
-            ->addColumn('status');
+
+            ->addColumn('created_at_formatted', fn (ShiftProposal $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'))
+            ->addColumn('updated_at_formatted', fn (ShiftProposal $model) => Carbon::parse($model->updated_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -111,19 +128,33 @@ final class UsersTable extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('NAME', 'name')
+
+            Column::make('SHIFT ADDRESS', 'shift_id')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('EMAIL', 'email')
+
+            Column::make('EMPLOYEE ID', 'employee_id')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('ROLES', 'roles'),
+            Column::make('MANAGER ID', 'manager_id')
+                ->sortable()
+                ->searchable(),
 
             Column::make('STATUS', 'status')
                 ->sortable()
                 ->searchable(),
+
+            Column::make('CREATED AT', 'created_at_formatted', 'created_at')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('UPDATED AT', 'updated_at_formatted', 'updated_at')
+                ->sortable()
+                ->searchable(),
+
+
         ];
     }
 
@@ -136,25 +167,19 @@ final class UsersTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid User Action Buttons.
+     * PowerGrid ShiftProposal Action Buttons.
      *
      * @return array<int, Button>
      */
 
-    /*
+
     public function actions(): array
     {
         return [
-            //    Button::make('edit', 'Edit')
-            //        ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-            //        ->route('user.edit', ['user' => 'id']),
-
-            Button::make('destroy', 'Delete')
-                ->class('btn btn-sm btn-danger')
-                ->method('delete')
+            Button::add('my-custom-button')
+                ->bladeComponent('proposal-submit', ['shiftId' => 'id', 'status' => 'status']),
         ];
     }
-    */
 
     /*
     |--------------------------------------------------------------------------
@@ -165,20 +190,21 @@ final class UsersTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid User Action Rules.
+     * PowerGrid ShiftProposal Action Rules.
      *
      * @return array<int, RuleActions>
      */
 
-
+    /*
     public function actionRules(): array
     {
-        return [
+       return [
 
-            //Hide button edit for ID 1
+           //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn ($user) => $user->id === 1)
+                ->when(fn($shift-proposal) => $shift-proposal->id === 1)
                 ->hide(),
         ];
     }
+    */
 }

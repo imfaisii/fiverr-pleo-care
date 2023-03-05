@@ -17,6 +17,7 @@ use App\Http\Livewire\Dashboard\RolesAndPermissions\Roles;
 use App\Http\Livewire\Dashboard\Shifts\CreateShift;
 use App\Http\Livewire\Dashboard\Shifts\Employees\ViewShifts;
 use App\Http\Livewire\Dashboard\Shifts\ListShifts;
+use App\Http\Livewire\Dashboard\Shifts\Proposals;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'web'], function () {
@@ -61,6 +62,7 @@ Route::group(['middleware' => ['auth', 'role:manager']], function () {
     Route::get('/clients', ListClients::class)->name('clients.list');
     Route::get('/shift/create', CreateShift::class)->name('shifts.create');
     Route::get('/shifts', ListShifts::class)->name('shifts.list');
+    Route::get('/shift/proposals', Proposals::class)->name('shifts.proposals');
 });
 
 // company

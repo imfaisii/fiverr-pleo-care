@@ -116,6 +116,9 @@
                                     <label for="address_address">Address</label>
                                     <input type="text" id="address-input" name="address_address"
                                         class="form-control map-input" value="Gujrat, Pakistan">
+                                    @error('address_latitude')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     <input type="hidden" name="address_latitude" id="address-latitude"
                                         value="32.596003" />
                                     <input type="hidden" name="address_longitude" id="address-longitude"
@@ -163,9 +166,9 @@
             });
 
         // saving lat long to backend var
-        function setBackendVars(long, lat, address) {
-            @this.address_address = $("#address-input").val()
-            @this.address_longitude = lat
+        function setBackendVars(long, lat) {
+            @this.address = 'hello' //$("#address-input").val()
+            @this.address_latitude = lat
             @this.address_longitude = long
         }
     </script>

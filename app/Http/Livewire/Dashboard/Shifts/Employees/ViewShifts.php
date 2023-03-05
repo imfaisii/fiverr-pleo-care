@@ -23,6 +23,11 @@ class ViewShifts extends Component
         'limit' => ['except' => '']
     ];
 
+    public function sendProposal(Shift $shift)
+    {
+        $shift->submitProposal(auth()->user()->employee->id, $shift->id, $shift->company_id);
+    }
+
     public function render()
     {
         $query = Shift::query();
@@ -36,9 +41,14 @@ class ViewShifts extends Component
                 $query->whereBetween('start_time', [$this->start_time, $this->end_time])
                     ->orWhereBetween('end_time', [$this->start_time, $this->end_time]);
             });
+        } else {
+            $query->where('start_time', '>', now());
         }
 
-        $query->with('manager.company.user', 'manager.user')->latest()->limit($this->limit);
+        $query
+            ->with(['company.user', 'manager.company.user', 'manager.user', 'jobRole'])
+            ->latest()
+            ->limit($this->limit);
 
         return view('livewire.dashboard.shifts.employees.view-shifts', [
             'shifts' => $query->get(),

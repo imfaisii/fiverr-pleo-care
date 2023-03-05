@@ -21,6 +21,8 @@ class Shift extends Model
         'address_longitude',
         'address_latitude',
         'status',
+        'expected_pay',
+        'job_role_id',
         'client_id',
         'employee_id',
         'manager_id',
@@ -35,6 +37,15 @@ class Shift extends Model
     protected $appends = [
         'total_shift_hours'
     ];
+
+    public function submitProposal($employeeId, $shiftId, $companyId)
+    {
+        ShiftProposal::firstOrCreate([
+            'employee_id' => $employeeId,
+            'shift_id' => $shiftId,
+            'company_id' => $companyId,
+        ]);
+    }
 
     public function scopeActive($query)
     {
@@ -66,6 +77,11 @@ class Shift extends Model
         return $this->belongsTo(Manager::class);
     }
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
     public function employee()
     {
         return $this->belongsTo(Employee::class);
@@ -79,5 +95,15 @@ class Shift extends Model
     public function checkIns()
     {
         return $this->hasMany(ShiftCheckIn::class, 'shift_id', 'id');
+    }
+
+    public function jobRole()
+    {
+        return $this->belongsTo(JobRole::class);
+    }
+
+    public function proposals()
+    {
+        return $this->hasMany(ShiftProposal::class, 'shift_id', 'id');
     }
 }

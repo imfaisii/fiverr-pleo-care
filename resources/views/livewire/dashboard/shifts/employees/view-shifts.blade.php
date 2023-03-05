@@ -53,7 +53,8 @@
                 <div class="card ribbon-box">
                     <div class="card-body">
                         <div class="ribbon ribbon-success float-end"><i class="mdi mdi-cash me-1"></i>
-                            {{ $shift->hourly_rate }} £ / Hr</div>
+                            Exp. Pay {{ $shift->expected_pay }} £
+                        </div>
                         <h5 class="float-start mt-0">Shift # {{ $loop->iteration }}</h5>
                         <div class="ribbon-content">
                             <h4 class="media-heading mt-15 mb-0 px-25">
@@ -64,19 +65,41 @@
                             <div class="media">
                                 <div class="media-body">
                                     <p class="text-gray-600">{{ $shift->description }}</p>
+                                    <p class="text-gray-600">Required: <strong>{{ $shift->jobRole->name }}</strong></p>
                                     @if (is_null($shift->employee_id))
-                                        <a class="btn btn-sm btn-bold btn-primary mt-15" href="#">Click to
-                                            book</a>
+                                        @if ($rec = \App\Models\ShiftProposal::where('shift_id', $shift->id)->where('employee_id', auth()->user()->employee->id)->first())
+                                            @if ($rec->status == 'rejected')
+                                                <a class="btn btn-sm btn-bold btn-danger mt-15" href="#">
+                                                    Your request for this shift was rejected.
+                                                </a>
+                                            @elseif($rec->status == 'approved')
+                                                <a class="btn btn-sm btn-bold btn-success mt-15" href="#">
+                                                    CONGRATULATIONS!!! You earned this shift. Follow the instructions in
+                                                    email to complete the shift requirements.
+                                                </a>
+                                            @else
+                                                <a class="btn btn-sm btn-bold btn-warning mt-15" href="#">
+                                                    You have already submitted a proposal
+                                                </a>
+                                            @endif
+                                        @else
+                                            <a class="btn btn-sm btn-bold btn-primary mt-15 sa-warning"
+                                                data-id="{{ $shift->id }}"
+                                                data-company="{{ $shift->company->user->name }}" href="#">
+                                                Click to submit proposal
+                                            </a>
+                                        @endif
                                     @else
-                                        <a class="btn btn-sm btn-bold btn-warning mt-15" href="#">Already
-                                            assigned</a>
+                                        <a class="btn btn-sm btn-bold btn-warning mt-15" href="#">
+                                            Assigned to someone</a>
                                     @endif
                                 </div>
                             </div>
                             <p class="mt-10 mb-0 px-30 by-1 py-10 text-mute">
                                 <i class="fa fa-user"></i> by <a href="#" class="text-mute">
                                     {{ $shift->manager->user->name }}</a>
-                                | <i class="fa fa-calendar"></i> {{ $shift->created_at->format('d/m/Y H:i:s') }}
+                                | <i class="fa fa-calendar"></i> {{ $shift->start_time->diffForHumans() }} <br><i
+                                    class="fa fa-map-marker"></i> {{ $shift->address_address }}
                             </p>
                         </div>
                     </div> <!-- end card-body -->
@@ -90,4 +113,49 @@
             </div>
         @endif
     </div>
+
+    <div wire:ignore.self id="success-alert-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content modal-filled bg-success">
+                <div class="modal-body p-4">
+                    <div class="text-center text-white">
+                        <i class="fa fa-check fs-36"></i>
+                        <h4 class="mt-2">Well Done!</h4>
+                        <p class="mt-3">Your request for the shift is submitted. Your manager will review your request
+                            and will update it accordingly. You will be notified via email is the shift is assigned to
+                            you.</p>
+                        <button type="button" class="btn btn-success-light my-2"
+                            data-bs-dismiss="modal">Continue</button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>
+
+@push('extended-js')
+    <script src="{{ asset('assets/vendor_components/sweetalert/sweetalert.min.js') }}"></script>
+    <script>
+        //Warning Message
+        $('.sa-warning').click(function() {
+            var shiftId = $(this).data('id')
+            var companyName = $(this).data('company')
+
+            swal({
+                title: "Are you sure?",
+                text: `You will be submitting a request for this shift to ${companyName}?`,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#fec801",
+                confirmButtonText: "Yes, send a proposal.",
+                closeOnConfirm: false
+            }, function() {
+                @this.sendProposal(shiftId)
+
+                swal.close()
+
+                $("#success-alert-modal").modal('show')
+            });
+        });
+    </script>
+@endpush

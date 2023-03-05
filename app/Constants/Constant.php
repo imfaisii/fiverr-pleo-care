@@ -16,7 +16,7 @@ class Constant
     const EMPLOYEE = 'employee';
 
     // shifts constants
-    const CREATED = 'created';
+    const ACTIVE = 'active';
     const COMPLETED = 'completed';
-    const IN_PROGRESS = 'in-progress';
+    const CANCELLED = 'cancelled';
 }

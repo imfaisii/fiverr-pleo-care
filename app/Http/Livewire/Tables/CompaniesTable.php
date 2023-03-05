@@ -88,16 +88,7 @@ final class CompaniesTable extends PowerGridComponent
         return PowerGrid::eloquent()
             ->addColumn('name')
             ->addColumn('email')
-            ->addColumn('status', function (User $model) {
-                if ($model->status == Constant::STATUS_ACTIVE)
-                    $class = "badge badge-success";
-                else if ($model->status == Constant::STATUS_PENDING)
-                    $class = "badge badge-warning";
-                else
-                    $class = "badge badge-danger";
-
-                return '<span class="' . $class . '">' . $model->status . '</span>';
-            })
+            ->addColumn('status')
             ->addColumn('created_at_formatted', fn (User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
