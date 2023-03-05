@@ -21,6 +21,11 @@ class Company extends Model
         return $this->hasMany(Manager::class);
     }
 
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class);
+    }
+
     public function jobRoles()
     {
         return $this->hasMany(JobRole::class);

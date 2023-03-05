@@ -3,26 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
-class ShiftCheckIn extends Model
+class ShiftFeedback extends Model
 {
     use HasFactory;
 
     public $fillable = [
-        'latitude',
-        'longitude',
-        'check_type',
+        'comments',
+        'rating',
         'shift_id',
-        'user_id',
     ];
-
-    protected $casts = ['created_at' => 'datetime:d/m/Y H:i:s'];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function shift()
     {
