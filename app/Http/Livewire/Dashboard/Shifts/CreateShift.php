@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Dashboard\Shifts;
 use App\Models\Client;
 use App\Models\JobRole;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Exception;
 use Livewire\Component;
 
@@ -67,10 +68,13 @@ class CreateShift extends Component
         if (!array_diff(['start_time', 'end_time', 'job_role_id'], array_keys($this->shift))) {
             $startTime = Carbon::parse($this->shift['start_time']);
             $endTime = Carbon::parse($this->shift['end_time']);
-
+            $employeeJobDaysArray=$this->GetDaysArray([
+                'start_time'=>$startTime,
+                'end_time'=>$endTime,
+            ]);
+            dd($employeeJobDaysArray);
             $jobRole = JobRole::find($this->shift['job_role_id'])->with('payments')->first();
             $perDayPayments = $jobRole->payments;
-
 
             foreach ($perDayPayments as $payment) {
 
@@ -91,6 +95,20 @@ class CreateShift extends Component
         }
 
         $this->validateOnly($property);
+    }
+
+    public function GetDaysArray(array $start_end_time){
+        $interval=CarbonPeriod::create($start_end_time['start_time'],'1 Day',$start_end_time['end_time']);
+        $DaysArray=[];
+        foreach($interval as $key=> $eachday){
+
+            $DaysArray[]=[
+                'start_time' => $key==0 ?  $start_end_time['start_time'] : Carbon::parse(Carbon::parse($eachday)->format('Y-m-d 00:00:00')),
+                'end_time'=> $key==count($interval)-1  ? $start_end_time['end_time']  : CArbon::parse(Carbon::parse($eachday)->format('Y-m-d 23:59:00')) ,
+            ];
+        }
+        dd($DaysArray);
+
     }
 
     public function calculateMinutes(array $input, array $paymentTime)
