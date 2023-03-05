@@ -68,21 +68,31 @@ class CreateShift extends Component
         if (!array_diff(['start_time', 'end_time', 'job_role_id'], array_keys($this->shift))) {
             $startTime = Carbon::parse($this->shift['start_time']);
             $endTime = Carbon::parse($this->shift['end_time']);
-            $employeeJobDaysArray=$this->GetDaysArray([
+            $employeeJobDaysArray=$this->getDays([
                 'start_time'=>$startTime,
                 'end_time'=>$endTime,
-            ]);
+            ]); // got days array  the from user selected start and end time
             dd($employeeJobDaysArray);
             $jobRole = JobRole::find($this->shift['job_role_id'])->with('payments')->first();
             $perDayPayments = $jobRole->payments;
+            foreach($employeeJobDaysArray as $key=>$eachUserDay){
+                dd($eachUserDay);
+                $eachDayUserTotalMinutes= $eachUserDay['start_time']->diffInMinutes( $eachUserDay['end_time']);
+                dd($eachDayUserTotalMinutes);
+                foreach($perDayPayments as $paykey=>$eachPayDay){
 
-            foreach ($perDayPayments as $payment) {
+                }
 
-                $commonMinutes = $this->calculateMinutes(
-                    ['start' => $startTime, 'end' => $endTime],
-                    ['start' => $payment->from_time, 'end' => $payment->to_time]
-                );
             }
+
+
+            // foreach ($perDayPayments as $payment) {
+
+            //     $commonMinutes = $this->calculateMinutes(
+            //         ['start' => $startTime, 'end' => $endTime],
+            //         ['start' => $payment->from_time, 'end' => $payment->to_time]
+            //     );
+            // }
 
             if (filled($this->shift['hourly_rate']) && $startTime->lt($endTime)) {
                 $minutes = $startTime->diffInMinutes($endTime);
@@ -97,19 +107,25 @@ class CreateShift extends Component
         $this->validateOnly($property);
     }
 
-    public function GetDaysArray(array $start_end_time){
-        $interval=CarbonPeriod::create($start_end_time['start_time'],'1 Day',$start_end_time['end_time']);
-        $DaysArray=[];
-        foreach($interval as $key=> $eachday){
 
-            $DaysArray[]=[
-                'start_time' => $key==0 ?  $start_end_time['start_time'] : Carbon::parse(Carbon::parse($eachday)->format('Y-m-d 00:00:00')),
-                'end_time'=> $key==count($interval)-1  ? $start_end_time['end_time']  : CArbon::parse(Carbon::parse($eachday)->format('Y-m-d 23:59:00')) ,
-            ];
-        }
-        dd($DaysArray);
+    public function getDays(array $start_end_time){
+        $startDate = Carbon::parse($start_end_time['start_time']);
+$endDate = Carbon::parse($start_end_time['end_time']);
+$days = [];
+$currentDate = $startDate->copy();
+
+while ($currentDate <= $endDate) {
+    $days[] = [
+        'start_time' => ($currentDate == $startDate) ? Carbon::parse($currentDate->format('Y-m-d H:i:s ')) : Carbon::parse(Carbon::parse($currentDate)->format('Y-m-d 00:00:00')),
+        'end_time' => ($currentDate == $endDate) ? Carbon::parse($currentDate->format('Y-m-d H:i:s ')) : Carbon::parse(Carbon::parse($currentDate)->format('Y-m-d 23:59:59')),
+    ];
+    $currentDate->addDay();
+}
+$days[count($days)-1]['end_time']=$start_end_time['end_time'];
+return ($days);
 
     }
+
 
     public function calculateMinutes(array $input, array $paymentTime)
     {
