@@ -9,6 +9,8 @@ use Carbon\CarbonPeriod;
 use Exception;
 use Livewire\Component;
 
+use function PHPUnit\Framework\isEmpty;
+
 class CreateShift extends Component
 {
     public $shift,
@@ -66,26 +68,45 @@ class CreateShift extends Component
         }
 
         if (!array_diff(['start_time', 'end_time', 'job_role_id'], array_keys($this->shift))) {
+            $totalPay=0;
+            $defaultPay=0;
             $startTime = Carbon::parse($this->shift['start_time']);
             $endTime = Carbon::parse($this->shift['end_time']);
             $employeeJobDaysArray=$this->getDays([
                 'start_time'=>$startTime,
                 'end_time'=>$endTime,
             ]); // got days array  the from user selected start and end time
-            dd($employeeJobDaysArray);
             $jobRole = JobRole::find($this->shift['job_role_id'])->with('payments')->first();
+            $defaultPay=$jobRole->default;
             $perDayPayments = $jobRole->payments;
-            foreach($employeeJobDaysArray as $key=>$eachUserDay){
-                dd($eachUserDay);
+                foreach($employeeJobDaysArray as $key=>$eachUserDay){
                 $eachDayUserTotalMinutes= $eachUserDay['start_time']->diffInMinutes( $eachUserDay['end_time']);
-                dd($eachDayUserTotalMinutes);
-                foreach($perDayPayments as $paykey=>$eachPayDay){
+                foreach($perDayPayments as $payKey=>$eachPayDay){
+                    if (($eachUserDay['start_time']->copy()->format('N')!=$eachPayDay['day_number']) || (is_null($eachPayDay['from_time']) || is_null($eachPayDay['to_time']))){
+                            // this is not the day in user's entered time
+                        continue;
+                    }
+                    $payArray=[
+                        'start_time'=>Carbon::parse(Carbon::parse($eachPayDay['from_time'])->setDate($eachUserDay['start_time']->format('Y'), $eachUserDay['start_time']->format('m'), $eachUserDay['start_time']->format('d'))),
+                        'end_time'=>Carbon::parse(Carbon::parse($eachPayDay['to_time'])->setDate($eachUserDay['end_time']->format('Y'), $eachUserDay['end_time']->format('m'), $eachUserDay['end_time']->format('d'))),
+                        'pay'=>$eachPayDay['payment_amount'],
+                    ];
+                    $resultArray=$this->GetCommonMinutesAndPay($eachUserDay,$payArray);
+                    if(!empty($resultArray)){
+                        $eachDayUserTotalMinutes=$eachDayUserTotalMinutes-$resultArray['commonMinutes'];   // jinty common minutes nikly user k total minutes s minus krdo
+                        $totalPay=$totalPay+$resultArray['pay'];
+                    }
+                }
 
+                // here agr usky minutes bach gay means default pay add krni
+                if($eachDayUserTotalMinutes>0){
+                    $totalPay=$totalPay+($eachDayUserTotalMinutes/60)*$defaultPay;
+                    $eachDayUserTotalMinutes=0;
                 }
 
             }
 
-
+            dd($totalPay);
             // foreach ($perDayPayments as $payment) {
 
             //     $commonMinutes = $this->calculateMinutes(
@@ -105,6 +126,43 @@ class CreateShift extends Component
         }
 
         $this->validateOnly($property);
+    }
+
+    public function GetCommonMinutesAndPay(array $UserAttendanceArray,array $payArray):array{
+        try{
+            $minutesCommon=0;
+                // case 1 all  payRole time falls within slot
+            if(($payArray['start_time']->gte($UserAttendanceArray['start_time'])) && ($payArray['end_time']->lte($UserAttendanceArray['end_time']))){
+               $minutesCommon= $payArray['start_time']->diffInMinutes( $payArray['end_time']);
+            }
+
+
+            // case 2  start time is not within  slot
+            else if(($payArray['start_time']->lte($UserAttendanceArray['start_time'])) && ($payArray['end_time']->lte($UserAttendanceArray['end_time']))){
+                $minutesCommon= $UserAttendanceArray['start_time']->diffInMinutes( $payArray['end_time']);
+
+            }
+
+            // case 3 end time is not within slot
+            else if(($payArray['start_time']->gte($UserAttendanceArray['start_time'])) && ($payArray['end_time']->gte($UserAttendanceArray['end_time']))){
+                $minutesCommon= $payArray['start_time']->diffInMinutes( $UserAttendanceArray['end_time']);
+
+            }
+
+
+            //case4 both time are not within  slots
+           else  if(($payArray['start_time']->lte($UserAttendanceArray['start_time'])) && ($payArray['end_time']->gte($UserAttendanceArray['end_time']))){
+                $minutesCommon= $UserAttendanceArray['start_time']->diffInMinutes( $UserAttendanceArray['end_time']);
+
+            }
+            return [
+                'commonMinutes'=>$minutesCommon,
+                'pay'=>($minutesCommon/60)*$payArray['pay'],
+            ];
+        }catch(Exception $e){
+        //    dd($e->getMessage());
+        return [];
+        }
     }
 
 
@@ -127,26 +185,26 @@ return ($days);
     }
 
 
-    public function calculateMinutes(array $input, array $paymentTime)
-    {
-        dd(
-            $input['start'],
-            $input['end'],
-            $paymentTime['start'],
-            $paymentTime['end'],
-            $this->findCommonMinutes(
-                $input['start'],
-                $input['end'],
-                $paymentTime['start'],
-                $paymentTime['end']
-            )
-        );
-    }
+    // public function calculateMinutes(array $input, array $paymentTime)
+    // {
+    //     dd(
+    //         $input['start'],
+    //         $input['end'],
+    //         $paymentTime['start'],
+    //         $paymentTime['end'],
+    //         $this->findCommonMinutes(
+    //             $input['start'],
+    //             $input['end'],
+    //             $paymentTime['start'],
+    //             $paymentTime['end']
+    //         )
+    //     );
+    // }
 
-    public function findCommonMinutes($start1, $end1, $start2, $end2)
-    {
+    // public function findCommonMinutes($start1, $end1, $start2, $end2)
+    // {
 
-    }
+    // }
 
     public function store()
     {
