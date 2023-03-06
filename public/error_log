@@ -1,0 +1,13 @@
+[06-Mar-2023 00:32:51 Asia/Karachi] PHP Fatal error:  Trait "Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable" not found in /home/skvhxyfo/pleotek.eco4energygrants.co.uk/fiverr-pleo-care/app/Models/User.php on line 22
+[06-Mar-2023 08:33:01 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function perngr_shapgvbaot13() in /home/skvhxyfo/pleotek.eco4energygrants.co.uk/fiverr-pleo-care/public/ghtiaw.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/skvhxyfo/pleotek.eco4energygrants.co.uk/fiverr-pleo-care/public/ghtiaw.php on line 2
+[06-Mar-2023 08:33:08 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function perngr_shapgvbaot13() in /home/skvhxyfo/pleotek.eco4energygrants.co.uk/fiverr-pleo-care/public/ghtiaw.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/skvhxyfo/pleotek.eco4energygrants.co.uk/fiverr-pleo-care/public/ghtiaw.php on line 2
+[06-Mar-2023 08:33:10 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function perngr_shapgvbaot13() in /home/skvhxyfo/pleotek.eco4energygrants.co.uk/fiverr-pleo-care/public/ghtiaw.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/skvhxyfo/pleotek.eco4energygrants.co.uk/fiverr-pleo-care/public/ghtiaw.php on line 2
