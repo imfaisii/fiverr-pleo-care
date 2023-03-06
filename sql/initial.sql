@@ -75,7 +75,7 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `name`, `email`, `phone_number`, `city`, `gender`, `age`, `address`, `manager_id`, `created_at`, `updated_at`) VALUES
-(1, 'Test Cleint', 'testclient@example.com', 125235235235, 'London', 'male', 20, 'some address', 1, '2023-01-29 06:57:44', '2023-01-29 06:57:44');
+(1, 'Test Client', 'testclient@example.com', 125235235235, 'London', 'male', 20, 'some address', 1, '2023-01-29 06:57:44', '2023-01-29 06:57:44');
 
 -- --------------------------------------------------------
 
