@@ -95,7 +95,7 @@ class CreateShift extends Component
         $this->validate();
 
         try {
-            $this->shift['company_id'] = auth()->user()->company->id;
+            $this->shift['company_id'] = auth()->user()->manager->company_id;
             auth()->user()->manager->shifts()->firstOrCreate($this->shift);
 
             // sending mail
