@@ -22,6 +22,7 @@ class Shift extends Model
         'address_latitude',
         'status',
         'expected_pay',
+        'company_id',
         'job_role_id',
         'client_id',
         'employee_id',
